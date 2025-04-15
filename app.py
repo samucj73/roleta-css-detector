@@ -1,11 +1,11 @@
 import streamlit as st
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service  # CORREÇÃO AQUI
-from selenium.webdriver.common.by import By
 import pandas as pd
-import time
 import os
+import time
+
+import undetected_chromedriver as uc
+import chromedriver_autoinstaller
+from selenium.webdriver.common.by import By
 
 st.set_page_config(page_title="Roleta CSS Detector", layout="centered")
 st.title("Detector de Números e Selectores CSS da Roleta")
@@ -14,14 +14,14 @@ url = st.text_input("Cole o link da página da roleta")
 
 @st.cache_resource
 def iniciar_driver():
-    chrome_options = Options()
-    chrome_options.add_argument("--headless")
-    chrome_options.add_argument("--no-sandbox")
-    chrome_options.add_argument("--disable-dev-shm-usage")
-    chrome_options.binary_location = "/usr/bin/google-chrome"
-    
-    service = Service(executable_path="/usr/local/bin/chromedriver")  # CORREÇÃO AQUI
-    driver = webdriver.Chrome(service=service, options=chrome_options)
+    chromedriver_autoinstaller.install()  # Instala automaticamente a versão correta
+    options = uc.ChromeOptions()
+    options.add_argument("--headless")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("--disable-gpu")
+
+    driver = uc.Chrome(options=options)
     return driver
 
 def descobrir_numeros_com_selectores(url):
