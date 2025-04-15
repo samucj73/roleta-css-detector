@@ -12,9 +12,7 @@ st.title("Detector de Números e Selectores CSS da Roleta")
 url = st.text_input("Cole o link da página da roleta")
 
 @st.cache_resource
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
+
 
 def iniciar_driver():
     chrome_options = Options()
