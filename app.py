@@ -1,6 +1,7 @@
 import streamlit as st
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service  # CORREÇÃO AQUI
 from selenium.webdriver.common.by import By
 import pandas as pd
 import time
@@ -12,8 +13,6 @@ st.title("Detector de Números e Selectores CSS da Roleta")
 url = st.text_input("Cole o link da página da roleta")
 
 @st.cache_resource
-
-
 def iniciar_driver():
     chrome_options = Options()
     chrome_options.add_argument("--headless")
@@ -21,8 +20,7 @@ def iniciar_driver():
     chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.binary_location = "/usr/bin/google-chrome"
     
-    service = Service(executable_path="/usr/local/bin/chromedriver")
-    
+    service = Service(executable_path="/usr/local/bin/chromedriver")  # CORREÇÃO AQUI
     driver = webdriver.Chrome(service=service, options=chrome_options)
     return driver
 
