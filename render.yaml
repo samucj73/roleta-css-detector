@@ -1,7 +1,20 @@
 services:
   - type: web
-    name: roleta-css-detector
+    name: app-roleta
     env: python
-    buildCommand: "pip install -r requirements.txt"
-    startCommand: "streamlit run app.py --server.port=10000 --server.enableCORS=false"
-    region: oregon
+    buildCommand: ""
+    startCommand: streamlit run app.py --server.port=10000 --server.enableCORS=false
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11
+    preDeployCommand: >
+      apt-get update &&
+      apt-get install -y wget unzip curl &&
+      wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb &&
+      apt install -y ./google-chrome-stable_current_amd64.deb &&
+      rm google-chrome-stable_current_amd64.deb &&
+      curl -sSL https://chromedriver.storage.googleapis.com/$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE)/chromedriver_linux64.zip -o chromedriver.zip &&
+      unzip chromedriver.zip &&
+      mv chromedriver /usr/local/bin/chromedriver &&
+      chmod +x /usr/local/bin/chromedriver &&
+      rm chromedriver.zip
