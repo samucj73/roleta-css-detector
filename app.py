@@ -1,11 +1,11 @@
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
 import streamlit as st
 import pandas as pd
-import os
 import time
-
-import undetected_chromedriver as uc
-import chromedriver_autoinstaller
-from selenium.webdriver.common.by import By
+import os
 
 st.set_page_config(page_title="Roleta CSS Detector", layout="centered")
 st.title("Detector de Números e Selectores CSS da Roleta")
@@ -14,14 +14,14 @@ url = st.text_input("Cole o link da página da roleta")
 
 @st.cache_resource
 def iniciar_driver():
-    chromedriver_autoinstaller.install()  # Instala automaticamente a versão correta
-    options = uc.ChromeOptions()
-    options.add_argument("--headless")
-    options.add_argument("--no-sandbox")
-    options.add_argument("--disable-dev-shm-usage")
-    options.add_argument("--disable-gpu")
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.binary_location = "/usr/bin/google-chrome"
 
-    driver = uc.Chrome(options=options)
+    service = Service("/usr/bin/chromedriver")  # Caminho padrão no Render
+    driver = webdriver.Chrome(service=service, options=chrome_options)
     return driver
 
 def descobrir_numeros_com_selectores(url):
@@ -77,7 +77,6 @@ if st.button("Descobrir números e seletores"):
             df = pd.DataFrame(resultados, columns=["Número", "Seletor CSS"])
             st.dataframe(df)
 
-            # Salvar histórico
             if os.path.exists("historico.csv"):
                 hist = pd.read_csv("historico.csv")
                 df = pd.concat([hist, df], ignore_index=True)
