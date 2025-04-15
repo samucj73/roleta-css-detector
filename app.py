@@ -1,8 +1,8 @@
+import streamlit as st
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
-import streamlit as st
 import pandas as pd
 import time
 import os
@@ -20,7 +20,7 @@ def iniciar_driver():
     chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.binary_location = "/usr/bin/google-chrome"
 
-    service = Service("/usr/bin/chromedriver")  # Caminho padrão no Render
+    service = Service("/usr/bin/chromedriver")
     driver = webdriver.Chrome(service=service, options=chrome_options)
     return driver
 
