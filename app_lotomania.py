@@ -41,7 +41,9 @@ if st.button("🚀 Gerar Jogos"):
             st.subheader(f"🧮 Gerando {qtd_jogos} jogos com até 10 exclusões aplicadas")
             jogos = gerar_cartelas(qtd_jogos, numeros_excluir)
 
-            
+            for idx, jogo in enumerate(jogos, 1):
+                st.markdown(f"**Jogo {idx:03}:** " + ", ".join(f"{n:02}" for n in jogo))
+
             st.subheader("✅ Conferência de Acertos (Último Concurso)")
             ultimo = resultados[0]
             dezenas_ult = set(ultimo["dezenas"])
@@ -49,9 +51,6 @@ if st.button("🚀 Gerar Jogos"):
             for idx, jogo in enumerate(jogos, 1):
                 acertos = len(set(jogo) & dezenas_ult)
                 st.markdown(f"🔍 **Jogo {idx:03}** → `{acertos}` acertos")
-
-for idx, jogo in enumerate(jogos, 1):
-                st.markdown(f"**Jogo {idx:03}:** " + ", ".join(f"{n:02}" for n in jogo))
 
             salvar_jogos_em_txt(jogos, "jogos_lotomania.txt")
             with open("jogos_lotomania.txt", "rb") as f:
