@@ -1,5 +1,0 @@
-streamlit
-selenium
-pandas
-undetected-chromedriver
-chromedriver-autoinstaller
