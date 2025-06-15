@@ -41,21 +41,23 @@ def validar_dicas(dezenas):
     if not (785 <= soma <= 1203): return False
     return True
 
-def gerar_20_dezenas_validas():
+def gerar_20_dezenas_validas(excluir=[]):
     while True:
-        dezenas = sorted(random.sample(TODOS_NUMEROS, 20))
+        pool = [d for d in TODOS_NUMEROS if d not in excluir]
+        if len(pool) < 20: return []
+        dezenas = sorted(random.sample(pool, 20))
         if validar_dicas(dezenas):
             return dezenas
 
-def gerar_cartao_completo():
-    base_20 = gerar_20_dezenas_validas()
+def gerar_cartao_completo(excluir=[]):
+    base_20 = gerar_20_dezenas_validas(excluir)
     restante = list(set(TODOS_NUMEROS) - set(base_20))
     complemento = random.sample(restante, 30)
     cartela = sorted(base_20 + complemento)
     return cartela
 
-def gerar_cartelas(qtd=10):
-    return [gerar_cartao_completo() for _ in range(qtd)]
+def gerar_cartelas(qtd=10, excluir=[]):
+    return [gerar_cartao_completo(excluir) for _ in range(qtd)]
 
 def conferir_jogos(jogos, resultados):
     conferencias = []
